@@ -23,10 +23,10 @@ spec:
             default: false
             resource:
               cpu:
-                containerQuery: |
-                  sum by (.\\<\\<GroupBy\\>\\>) (
+                containerQuery: '
+                  sum by (.<<GroupBy>>) (
                     rate(container_cpu_usage_seconds_total{container!="",.LabelMatchers}[3m])
-                  )
+                  )'
                 nodeQuery: |
                   sum  by (.GroupBy) (
                     rate(node_cpu_seconds_total{mode!="idle",mode!="iowait",mode!="steal",.LabelMatchers}[3m])
