@@ -70,7 +70,12 @@ spec:
           key57: value1
           key58: value1
           key59: value1
-          key60: value1
+          nested:
+            level1:
+              level2:
+                level3:
+                  level4:
+                    level6: value2
   destination:
     server: https://kubernetes.default.svc
     namespace: default
