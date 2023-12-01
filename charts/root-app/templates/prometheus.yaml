@@ -14,6 +14,63 @@ spec:
       valuesObject:
         pushgateway:
           enabled: false
+        testdata:
+          key1: value1
+          key2: value1
+          key3: value1
+          key4: value1
+          key5: value1
+          key6: value1
+          key7: value1
+          key8: value1
+          key9: value1
+          key10: value1
+          key11: value1
+          key12: value1
+          key13: value1
+          key14: value1
+          key15: value1
+          key16: value1
+          key17: value1
+          key18: value1
+          key19: value1
+          key21: value1
+          key22: value1
+          key23: value1
+          key24: value1
+          key25: value1
+          key26: value1
+          key27: value1
+          key28: value1
+          key29: value1
+          key31: value1
+          key32: value1
+          key33: value1
+          key34: value1
+          key35: value1
+          key36: value1
+          key37: value1
+          key38: value1
+          key39: value1
+          key41: value1
+          key42: value1
+          key43: value1
+          key44: value1
+          key45: value1
+          key46: value1
+          key47: value1
+          key48: value1
+          key49: value1
+          key51: value1
+          key52: value1
+          key53: value1
+          key54: value1
+          key55: value1
+          key56: value1
+          key57: value1
+          key58: value1
+          key59: value1
+          key60: value1
   destination:
     server: https://kubernetes.default.svc
     namespace: default
