@@ -11,7 +11,7 @@ spec:
     chart: prometheus
     targetRevision: 25.3.1
     helm:
-      values: |
+      valuesObject:
         pushgateway:
           enabled: false
         testdata: '{foo}bar'
