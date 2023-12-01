@@ -25,7 +25,6 @@ spec:
               cpu:
                 containerQuery: |
                   sum by (<<.GroupBy>>) (
-                    rate(container_cpu_usage_seconds_total{container!="",<<.LabelMatchers>>}[3m])
                   )
           key1: value1
           key2: value1
