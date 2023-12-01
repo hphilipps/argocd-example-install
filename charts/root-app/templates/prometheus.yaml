@@ -24,7 +24,7 @@ spec:
             resource:
               cpu:
                 containerQuery: |
-                  sum by (<<.GroupBy>>) (
+                  sum by (GroupBy) (
                   )
           key1: value1
           key2: value1
