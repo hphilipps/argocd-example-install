@@ -71,6 +71,7 @@ spec:
             auth_url: https://traderepublic.okta.com/oauth2/v1/authorize
             token_url: https://traderepublic.okta.com/oauth2/v1/token
             api_url: https://traderepublic.okta.com/oauth2/v1/userinfo
+            role_attribute_path: "{{ range $.Values.roleMapping }}contains(groups[*], '{{ .group }}') && '{{ .role }}' || {{ end }}'Viewer'"
   destination:
     server: https://kubernetes.default.svc
     namespace: default
