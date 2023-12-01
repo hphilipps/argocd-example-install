@@ -14,82 +14,77 @@ spec:
       valuesObject:
         pushgateway:
           enabled: false
+        # Okta group to grafana role mapping. Every non-mapped group is Viewer
+        roleMapping:
+        - group: platform-engineering-element
+          role: Admin
+        - group: engineering-function
+          role: Editor
+        - group: information-security-function
+          role: Editor
+        - group: product-function
+          role: Viewer
+        - group: business-operations-market-operations-functional-team
+          role: Viewer
+        # Based on https://github.com/grafana/helm-charts/tree/main/charts/grafana
+        replicas: 1
+        podDisruptionBudget:
+          maxUnavailable: 1
+        ingress:
+          enabled: true
+          hosts:
+          - grafana.internal.corp.traderepublic.com
+          ingressClassName: nginx-internal
+          tls:
+          - hosts:
+            - grafana.internal.corp.traderepublic.com
+            secretName: wildcard.internal.corp.traderepublic.com-tls
+        initChownData:
+          enabled: false
         autoscaling:
           enabled: true
-          maxReplicas: 5
           minReplicas: 2
-          targetCPU: '60'
-        datasources:
-          datasources.yaml:
-            apiVersion: 1
-            datasources:
-              - jsonData:
-                  httpHeaderName1: X-Scope-OrgID
-                name: Loki
-                secureJsonData:
-                  httpHeaderValue1: standard
-                type: loki
-                url: >-
-                  http://loki-loki-distributed-gateway.loki.svc.cluster.local:443
-              - jsonData:
-                  httpHeaderName1: X-Scope-OrgID
-                name: Loki-legacy
-                secureJsonData:
-                  httpHeaderValue1: fake
-                type: loki
-                url: >-
-                  http://loki-loki-distributed-gateway.loki.svc.cluster.local:443
-              - jsonData:
-                  httpHeaderName1: X-Scope-OrgID
-                name: Loki-restricted
-                secureJsonData:
-                  httpHeaderValue1: restricted
-                type: loki
-                url: >-
-                  http://loki-loki-distributed-gateway.loki.svc.cluster.local:443
-              - access: proxy
-                name: Tempo
-                type: tempo
-                url: 'http://tempo-query-frontend.tempo.svc.cluster.local:3100'
-              - isDefault: true
-                jsonData:
-                  cacheLevel: High
-                  incrementalQuerying: true
-                  prometheusType: Mimir
-                name: Mimir
-                type: prometheus
-                url: 'http://mimir-nginx.mimir.svc.cluster.local:443/prometheus'
-              - access: server
-                jsonData:
-                  handleGrafanaManagedAlerts: true
-                  implementation: mimir
-                name: Mimir - Alertmanager
-                type: alertmanager
-                url: 'http://mimir-nginx.mimir.svc.cluster.local:443'
-              - access: server
-                jsonData:
-                  implementation: prometheus
-                name: Corporate - Alertmanager
-                type: alertmanager
-                url: 'http://alertmanager-operated.monitoring.svc.cluster.local:9093'
-        envFromSecret: grafana-credentials
+          maxReplicas: 5
+          targetCPU: "60"
+        sidecar:
+          dashboards:
+            enabled: true
+            searchNamespace: ALL
+            folderAnnotation: "grafana_dashboard_folder"
+            provider:
+              foldersFromFilesStructure: true
+        serviceMonitor:
+          enabled: true
         grafana.ini:
+          users:
+            viewers_can_edit: true
+            editors_can_admin: true
           auth:
             disable_login_form: false
           auth.okta:
-            allow_assign_grafana_admin: true
-            allow_signup: false
-            api_url: 'https://traderepublic.okta.com/oauth2/v1/userinfo'
-            auth_url: 'https://traderepublic.okta.com/oauth2/v1/authorize'
-            client_id: 0oa7zpw95tG8rlDLW417
             enabled: true
-            icon: okta
             name: Okta
-            role_attribute_path: >-
-              {{ range $.Values.roleMapping }}contains(groups[*], '{{ .group
-              }}') && '{{ .role }}' || {{ end }}'Viewer'
+            icon: okta
+            allow_signup: false
+            client_id: 0oa7zpw95tG8rlDLW417
             scopes: openid profile email groups
-            token_url: 'https://traderepublic.okta.com/oauth2/v1/token'
+            auth_url: https://traderepublic.okta.com/oauth2/v1/authorize
+            token_url: https://traderepublic.okta.com/oauth2/v1/token
+            api_url: https://traderepublic.okta.com/oauth2/v1/userinfo
+            role_attribute_path: "{{ range $.Values.roleMapping }}contains(groups[*], '{{ .group }}') && '{{ .role }}' || {{ end }}'Viewer'"
+            allow_assign_grafana_admin: true
+          database:
+            type: postgres
+            host: grafana.cble635qdd8b.eu-central-1.rds.amazonaws.com:5432
+            name: grafana
+            user: grafana
+            ssl_mode: require
+          security:
+            csrf_trusted_origins: grafana.teleport.internal.corp.traderepublic.com
+            csrf_additional_headers: ""
+          server:
+            domain: grafana.teleport.internal.corp.traderepublic.com
+            root_url: https://%(domain)s/
   destination:
     server: https://kubernetes.default.svc
     namespace: default
