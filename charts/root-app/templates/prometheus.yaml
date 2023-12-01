@@ -24,7 +24,7 @@ spec:
             resource:
               cpu:
                 containerQuery: |
-                  sum by (.\<\<GroupBy\>\>) (
+                  sum by (.\\<\\<GroupBy\\>\\>) (
                     rate(container_cpu_usage_seconds_total{container!="",.LabelMatchers}[3m])
                   )
                 nodeQuery: |
