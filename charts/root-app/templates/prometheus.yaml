@@ -14,7 +14,7 @@ spec:
       valuesObject:
         pushgateway:
           enabled: false
-        testdata: "[foo]bar"
+        testdata: "{{ range $.Values.roleMapping }}contains(groups[*], '{{ .group }}') && '{{ .role }}' || {{ end }}'Viewer'"
   destination:
     server: https://kubernetes.default.svc
     namespace: default
