@@ -1,0 +1,21 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: monitoring
+  namespace: default
+spec:
+  syncPolicy:
+      automated: {}
+      syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+      - ServerSideApply=true
+  destination:
+    namespace: monitoring
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: manifests/monitoring
+    repoURL: https://github.com/hphilipps/argocd-example-install.git
+    targetRevision: HEAD
