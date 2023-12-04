@@ -46,9 +46,6 @@ spec:
           name: Paused
           priority: 1
           type: boolean
-        - jsonPath: .status.conditions.test
-          name: Test
-          type: string
       name: v1
       schema:
         openAPIV3Schema:
@@ -6308,14 +6305,10 @@ spec:
                       type:
                         description: Type of the condition being reported.
                         type: string
-                      test:
-                        description: Test
-                        type: string
                     required:
                       - lastTransitionTime
                       - status
                       - type
-                      - test
                     type: object
                   type: array
                   x-kubernetes-list-map-keys:
