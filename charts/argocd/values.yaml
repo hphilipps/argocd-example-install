@@ -6,6 +6,7 @@ argo-cd:
   applicationSet:
     enabled: false
   server:
+    server.route.enabled: false
   global:
     image:
       tag: "v2.9.2"
