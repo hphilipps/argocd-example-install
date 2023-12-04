@@ -20,7 +20,7 @@ spec:
   scope: Namespaced
   versions:
     - additionalPrinterColumns:
-        - description: The version of Prometheus
+        - description: The version of Prometheus - foo
           jsonPath: .spec.version
           name: Version
           type: string
